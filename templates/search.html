@@ -1,14 +1,31 @@
-<div>
-  <div>
-    <form method="GET" action="">
-      {{ form.search(placeholder="Search") }}
-      {{ form.venue_type(placeholder="Place to visit") }}
-      {{ form.entry_requirement(placeholder="Entry requirement") }}
-    </form>
+{% extends "layout.html" %}
+{% block content %}
+<form method="GET" action="">
+  <div class="input-group row d-flex justify-content-center align-items-center">
+    <div class="form-outline">
+      {{ form.search }}
+      <input type="search" id="search" class="form-control" />
+      <label class="form-label" for="search">Search</label>
+    </div>
+    <button type="button" class="btn btn-primary">
+      <i class="fas fa-search"></i>
+    </button>
+
+    <div class="mb-3">
+      {{ form.venue_type }}
+      <label for="inputVenueType" class="form-label">Place to visit</label>
+      <input type="text" class="form-control" id="inputVenueType">
+    </div>
+    <div class="mb-3">
+      {{ form.entry_requirement }}
+      <label for="inputEntryRequirements" class="form-label">Entry requirement</label>
+      <input type="text" class="form-control" id="inputEntryRequirements">
+    </div>
   </div>
-  <div id="map">
-    {% for venue in venues %}
-    <div>{{ venue.name }}, {{ venue.venue_type.name }}, {{ venue.requirement.name }}</div>
-    {% endfor %}
-  </div>
+</form>
+<div id="map">
+  {% for venue in venues %}
+  <div>{{ venue.name }}, {{ venue.venue_type.name }}, {{ venue.requirement.name }}</div>
+  {% endfor %}
 </div>
+{% endblock content %}

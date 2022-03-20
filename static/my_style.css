@@ -5,4 +5,12 @@ body {
 #main-title {
   font-family: 'Kaushan Script', cursive;
   color: white;
+  text-align: center;
+  font-size: 80px;
+  margin-top: 15%;
+  margin-bottom: 50px;
+}
+
+#login-card {
+  margin-top: -100;
 }
