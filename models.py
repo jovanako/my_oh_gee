@@ -1,8 +1,15 @@
 import os
 import secrets
-from sqlalchemy import Column, String, Integer
-from flask_sqlalchemy import SQLAlchemy
+
 from flask_login import LoginManager, UserMixin
+from flask_sqlalchemy import SQLAlchemy
+from geoalchemy2.functions import ST_DWithin
+from geoalchemy2.shape import from_shape
+from geoalchemy2.types import Geography, Geometry
+from sqlalchemy import Column, ForeignKey, Integer, String, Text
+from sqlalchemy.sql.expression import cast
+
+_SRID = 4326
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -32,3 +39,45 @@ class User(db.Model, UserMixin):
     id = Column(Integer, primary_key=True)
     email = Column(String(100), unique=True, nullable=False)
     password_hash = Column(String(60), nullable=False)
+
+
+class Entry_Requirement(db.Model):
+    __tablename__ = 'entry_requirements'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20), unique=True, nullable=False)
+    description = Column(Text, nullable=False)
+
+
+class Venue_Type(db.Model):
+    __tablename__ = 'venue_types'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), unique=True, nullable=False)
+
+
+class Venue(db.Model):
+    __tablename__ = 'venues'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), unique=True, nullable=False)
+    address = Column(String(100), nullable=False)
+    geom = Column(Geometry(geometry_type='POINT', srid=_SRID))
+    requirement_id = Column(String(100), ForeignKey(
+        'entry_requirements.id'), nullable=False)
+    venue_type_id = Column(String(100), ForeignKey(
+        'venue_types.id'), nullable=False)
+    webpage = Column(String(100))
+    image_path = Column(String(100))
+    creator_id = Column(String(100), ForeignKey('users.id'), nullable=False)
+
+    # @staticmethod
+    # def get_venues_within_radius(lat, lng, radius_meters):
+    #     # TODO: The arbitrary limit = 100 is just a quick way to make sure
+    #     # we won't return tons of entries at once,
+    #     # paging needs to be in place for real usecase
+    #     results = Venue.query.filter(
+    #         ST_DWithin(
+    #             cast(Venue.geom, Geography),
+    #             cast(from_shape(Point(lng, lat)), Geography),
+    #             radius_meters)
+    #     ).limit(100).all()
+
+    #     return [l.to_dict() for l in results]
