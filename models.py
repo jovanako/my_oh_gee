@@ -4,7 +4,7 @@ import secrets
 from flask_login import LoginManager, UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from geoalchemy2.functions import ST_DWithin
-from geoalchemy2.shape import from_shape
+# from geoalchemy2.shape import from_shape
 from geoalchemy2.types import Geography, Geometry
 from sqlalchemy import Column, ForeignKey, Integer, String, Text
 from sqlalchemy.sql.expression import cast
@@ -60,13 +60,13 @@ class Venue(db.Model):
     name = Column(String(100), unique=True, nullable=False)
     address = Column(String(100), nullable=False)
     geom = Column(Geometry(geometry_type='POINT', srid=_SRID))
-    requirement_id = Column(String(100), ForeignKey(
+    requirement_id = Column(Integer, ForeignKey(
         'entry_requirements.id'), nullable=False)
-    venue_type_id = Column(String(100), ForeignKey(
+    venue_type_id = Column(Integer, ForeignKey(
         'venue_types.id'), nullable=False)
     webpage = Column(String(100))
     image_path = Column(String(100))
-    creator_id = Column(String(100), ForeignKey('users.id'), nullable=False)
+    creator_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     # @staticmethod
     # def get_venues_within_radius(lat, lng, radius_meters):
