@@ -1,8 +1,8 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, current_user
 from flask_bcrypt import Bcrypt
-from forms import LoginForm
-from models import User
+from forms import LoginForm, SearchForm
+from models import ANY_ENTRY_REQUIREMENT_ID, ANY_VENUE_TYPE_ID, EntryRequirement, User, Venue, VenueType
 
 
 def create_routes(app):
@@ -11,7 +11,21 @@ def create_routes(app):
 
     @app.get("/")
     def home():
-        return "Hellooo!"
+        form = SearchForm(request.args)
+        venue_type_choices = [(vt.id, vt.name)
+                              for vt in VenueType.query.all()]
+        venue_type_choices.insert(0, (ANY_VENUE_TYPE_ID, 'Place to visit'))
+        form.venue_type.choices = venue_type_choices
+
+        entry_requirement_choices = [
+            (er.id, er.name) for er in EntryRequirement.query.all()]
+        entry_requirement_choices.insert(
+            ANY_ENTRY_REQUIREMENT_ID, (0, 'Entry requirement'))
+        form.entry_requirement.choices = entry_requirement_choices
+
+        venues = Venue.get_venues_in_vicinity(
+            search=form.search.data, venue_type_id=form.venue_type.data, entry_requirement_id=form.entry_requirement.data, lat=53, lng=12)
+        return render_template('search.html', title='Search', form=form, venues=venues)
 
     @app.route("/login", methods=['GET', 'POST'])
     def login():

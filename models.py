@@ -4,12 +4,15 @@ import secrets
 from flask_login import LoginManager, UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from geoalchemy2.functions import ST_DWithin
-# from geoalchemy2.shape import from_shape
+from geoalchemy2.shape import from_shape
 from geoalchemy2.types import Geography, Geometry
+from shapely.geometry import Point
 from sqlalchemy import Column, ForeignKey, Integer, String, Text
 from sqlalchemy.sql.expression import cast
 
 _SRID = 4326
+ANY_VENUE_TYPE_ID = 0
+ANY_ENTRY_REQUIREMENT_ID = 0
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -41,14 +44,14 @@ class User(db.Model, UserMixin):
     password_hash = Column(String(60), nullable=False)
 
 
-class Entry_Requirement(db.Model):
+class EntryRequirement(db.Model):
     __tablename__ = 'entry_requirements'
     id = Column(Integer, primary_key=True)
     name = Column(String(20), unique=True, nullable=False)
     description = Column(Text, nullable=False)
 
 
-class Venue_Type(db.Model):
+class VenueType(db.Model):
     __tablename__ = 'venue_types'
     id = Column(Integer, primary_key=True)
     name = Column(String(100), unique=True, nullable=False)
@@ -62,22 +65,43 @@ class Venue(db.Model):
     geom = Column(Geometry(geometry_type='POINT', srid=_SRID))
     requirement_id = Column(Integer, ForeignKey(
         'entry_requirements.id'), nullable=False)
+    requirement = db.relationship('EntryRequirement')
     venue_type_id = Column(Integer, ForeignKey(
         'venue_types.id'), nullable=False)
+    venue_type = db.relationship('VenueType')
     webpage = Column(String(100))
     image_path = Column(String(100))
     creator_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
-    # @staticmethod
-    # def get_venues_within_radius(lat, lng, radius_meters):
-    #     # TODO: The arbitrary limit = 100 is just a quick way to make sure
-    #     # we won't return tons of entries at once,
-    #     # paging needs to be in place for real usecase
-    #     results = Venue.query.filter(
-    #         ST_DWithin(
-    #             cast(Venue.geom, Geography),
-    #             cast(from_shape(Point(lng, lat)), Geography),
-    #             radius_meters)
-    #     ).limit(100).all()
+    @staticmethod
+    def get_venues_in_vicinity(lat, lng, search, venue_type_id, entry_requirement_id):
+        # TODO: The arbitrary limit = 100 is just a quick way to make sure
+        # we won't return tons of entries at once,
+        # paging needs to be in place for real usecase
+        # query = Venue.query.filter(
+        #     ST_DWithin(
+        #         cast(Venue.geom, Geography),
+        #         cast(from_shape(Point(lng, lat)), Geography),
+        #         radius_meters)
+        # ).limit(100)
 
-    #     return [l.to_dict() for l in results]
+        query = Venue.query
+
+        if lat is not None and lng is not None:
+            query.filter(ST_DWithin(
+                cast(Venue.geom, Geography),
+                cast(from_shape(Point(lng, lat)), Geography),
+                3000))
+
+        venue_type_id = ANY_VENUE_TYPE_ID if venue_type_id is None else venue_type_id
+        if venue_type_id is not ANY_VENUE_TYPE_ID:
+            query = query.filter_by(venue_type_id=venue_type_id)
+
+        entry_requirement_id = ANY_ENTRY_REQUIREMENT_ID if entry_requirement_id is None else entry_requirement_id
+        if entry_requirement_id is not ANY_ENTRY_REQUIREMENT_ID:
+            query = query.filter_by(requirement_id=entry_requirement_id)
+
+        if search != '' and search is not None:
+            query = query.filter(Venue.name.like(f'%{search}%'))
+
+        return query.limit(100).all()

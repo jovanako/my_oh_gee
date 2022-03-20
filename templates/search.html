@@ -1,0 +1,14 @@
+<div>
+  <div>
+    <form method="GET" action="">
+      {{ form.search(placeholder="Search") }}
+      {{ form.venue_type(placeholder="Place to visit") }}
+      {{ form.entry_requirement(placeholder="Entry requirement") }}
+    </form>
+  </div>
+  <div id="map">
+    {% for venue in venues %}
+    <div>{{ venue.name }}, {{ venue.venue_type.name }}, {{ venue.requirement.name }}</div>
+    {% endfor %}
+  </div>
+</div>

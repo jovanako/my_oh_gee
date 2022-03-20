@@ -1,0 +1,2 @@
+INSERT INTO venues (name,                               address,                            geom,                         requirement_id, venue_type_id, creator_id)
+VALUES              ('Museum for Communication Berlin', 'Leipziger Str. 16, 10117 Berlin',   ST_GeomFromText('POINT(52.510072 13.386602)', 4326) , 1,              1,              1);
