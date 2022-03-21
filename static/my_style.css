@@ -7,10 +7,6 @@ body {
   color: white;
   text-align: center;
   font-size: 80px;
-  margin-top: 15%;
-  margin-bottom: 50px;
-}
-
-#login-card {
-  margin-top: -100;
+  margin-top: 10%;
+  margin-bottom: 20px;
 }

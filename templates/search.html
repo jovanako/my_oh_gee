@@ -1,31 +1,39 @@
 {% extends "layout.html" %}
 {% block content %}
-<form method="GET" action="">
-  <div class="input-group row d-flex justify-content-center align-items-center">
-    <div class="form-outline">
-      {{ form.search }}
-      <input type="search" id="search" class="form-control" />
-      <label class="form-label" for="search">Search</label>
-    </div>
-    <button type="button" class="btn btn-primary">
-      <i class="fas fa-search"></i>
-    </button>
+<section class="vh-100">
+  <div class="container py-5">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <h1 id="main-title">Oh Gee!</h1>
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
 
-    <div class="mb-3">
-      {{ form.venue_type }}
-      <label for="inputVenueType" class="form-label">Place to visit</label>
-      <input type="text" class="form-control" id="inputVenueType">
-    </div>
-    <div class="mb-3">
-      {{ form.entry_requirement }}
-      <label for="inputEntryRequirements" class="form-label">Entry requirement</label>
-      <input type="text" class="form-control" id="inputEntryRequirements">
+            <h3 class="mb-5">Where do you want to go?</h3>
+
+            <form method="POST" action="">
+
+              <div class="input-box form-outline mb-4">
+                {{ form.search(class="input form-control form-control-lg", placeholder="Search") }}
+              </div>
+
+              <div class="input-box form-outline mb-4">
+                {{ form.venue_type(class="input form-control form-control-lg") }}
+              </div>
+
+              <div class="input-box form-outline mb-4">
+                {{ form.entry_requirement(class="input form-control form-control-lg") }}
+              </div>
+            </form>
+            <div id="map">
+              {% for venue in venues %}
+              <div>{{ venue.name }}, {{ venue.venue_type.name }}, {{ venue.requirement.name }}</div>
+              {% endfor %}
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</form>
-<div id="map">
-  {% for venue in venues %}
-  <div>{{ venue.name }}, {{ venue.venue_type.name }}, {{ venue.requirement.name }}</div>
-  {% endfor %}
-</div>
+</section>
 {% endblock content %}
