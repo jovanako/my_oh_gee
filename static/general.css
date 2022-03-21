@@ -10,3 +10,8 @@ body {
   margin-top: 10%;
   margin-bottom: 20px;
 }
+
+.btn {
+  background-color: #a070c3;
+  color: white;
+}
