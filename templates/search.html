@@ -24,16 +24,14 @@
                 {{ form.entry_requirement(class="input form-control form-control-lg") }}
               </div>
             </form>
-            <div id="map">
-              {% for venue in venues %}
-              <div>{{ venue.name }}, {{ venue.venue_type.name }}, {{ venue.requirement.name }}</div>
-              {% endfor %}
-            </div>
-
+            <div id="map"></div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&callback=initMap&v=weekly"
+    async></script>
+  <script src="static/map.js"></script>
 </section>
 {% endblock content %}
