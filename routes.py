@@ -46,4 +46,4 @@ def create_routes(app):
     @app.get("/logout")
     def logout():
         logout_user()
-        redirect(url_for('/'))
+        return redirect(url_for('home'))
