@@ -16,7 +16,7 @@ ANY_ENTRY_REQUIREMENT_ID = 0
 
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.login_view = 'users.login'
+login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 
 
@@ -62,7 +62,7 @@ class Venue(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(100), unique=True, nullable=False)
     address = Column(String(100), nullable=False)
-    geom = Column(Geometry(geometry_type='POINT', srid=_SRID))
+    geom = Column(Geometry(geometry_type='POINT', srid=_SRID), nullable=False)
     requirement_id = Column(Integer, ForeignKey(
         'entry_requirements.id'), nullable=False)
     requirement = db.relationship('EntryRequirement')
@@ -72,19 +72,15 @@ class Venue(db.Model):
     webpage = Column(String(100))
     image_path = Column(String(100))
     creator_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    creator = db.relationship('User')
+
+    @staticmethod
+    def save(venue):
+        db.session.add(venue)
+        db.session.commit()
 
     @staticmethod
     def get_venues_in_vicinity(lat, lng, search, venue_type_id, entry_requirement_id):
-        # TODO: The arbitrary limit = 100 is just a quick way to make sure
-        # we won't return tons of entries at once,
-        # paging needs to be in place for real usecase
-        # query = Venue.query.filter(
-        #     ST_DWithin(
-        #         cast(Venue.geom, Geography),
-        #         cast(from_shape(Point(lng, lat)), Geography),
-        #         radius_meters)
-        # ).limit(100)
-
         query = Venue.query
 
         if lat is not None and lng is not None:

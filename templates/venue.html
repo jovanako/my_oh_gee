@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="vh-100">
+  <div class="container py-5">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <h1 id="main-title">Oh Gee!</h1>
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+
+            <h3 class="mb-5">New Venue</h3>
+
+            <form method="POST" action="/venue" enctype="multipart/form-data">
+
+              <div class="input-box form-outline mb-4">
+                {{ form.name(class="input form-control form-control-lg", placeholder="Name") }}
+              </div>
+
+              <div class="input-box form-outline mb-4">
+                {{ form.latitude(class="input form-control form-control-lg", placeholder="Latitude") }}
+              </div>
+
+              <div class="input-box form-outline mb-4">
+                {{ form.longitude(class="input form-control form-control-lg", placeholder="Longitude") }}
+              </div>
+
+              <div class="input-box form-outline mb-4">
+                {{ form.address(class="input form-control form-control-lg", placeholder="Address") }}
+              </div>
+
+              <div class="input-box form-outline mb-4">
+                {{ form.venue_type(class="input form-control form-control-lg") }}
+              </div>
+
+              <div class="input-box form-outline mb-4">
+                {{ form.entry_requirement(class="input form-control form-control-lg") }}
+              </div>
+
+              <div class="input-box form-outline mb-4">
+                {{ form.web_page(class="input form-control form-control-lg", placeholder="Web page") }}
+              </div>
+
+              <div class="input-box form-outline mb-4">
+                {{ form.image(class="input form-control form-control-lg", placeholder="Image") }}
+              </div>
+
+              <div class="input-box form-outline mb4">
+                {{ form.submit(class="btn btn-outline-info") }}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
