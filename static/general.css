@@ -4,11 +4,18 @@ body {
 
 #main-title {
   font-family: 'Kaushan Script', cursive;
-  color: white;
-  text-align: center;
   font-size: 80px;
   margin-top: 10%;
   margin-bottom: 20px;
+}
+
+.title {
+  color: white;
+  text-align: center;
+}
+
+#subtitle {
+  margin-bottom: 30px;
 }
 
 .btn {

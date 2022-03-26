@@ -1,8 +1,10 @@
 let map;
 
 function initMap() {
+  const berlin = new google.maps.LatLng(52.51807415366815, 13.403719548295928)
+
   map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: -34.397, lng: 150.644 },
-    zoom: 8,
+    center: berlin,
+    zoom: 12,
   });
 }
