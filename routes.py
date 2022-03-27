@@ -21,6 +21,7 @@ def create_routes(app):
 
         venues = Venue.get_venues_in_vicinity(
             search=form.search.data, venue_type_id=form.venue_type.data, entry_requirement_id=form.entry_requirement.data, lat=53, lng=12)
+        venues = [venue.to_dict() for venue in venues]
         return render_template('search.html', title='Search', form=form, venues=venues, GOOGLE_API_KEY=os.environ.get('GOOGLE_API_KEY'))
 
     @app.route("/venue", methods=['GET', 'POST'])
@@ -70,14 +71,14 @@ def create_routes(app):
     def get_venue_type_choices():
         venue_type_choices = [(vt.id, vt.name)
                               for vt in VenueType.query.all()]
-        venue_type_choices.insert(0, (ANY_VENUE_TYPE_ID, 'Place to visit'))
+        venue_type_choices.insert(0, (ANY_VENUE_TYPE_ID, 'Any venue type'))
         return venue_type_choices
 
     def get_entry_requirements_choices():
         entry_requirement_choices = [
             (er.id, er.name) for er in EntryRequirement.query.all()]
         entry_requirement_choices.insert(
-            ANY_ENTRY_REQUIREMENT_ID, (0, 'Entry requirement'))
+            ANY_ENTRY_REQUIREMENT_ID, (0, 'Any entry requirement'))
         return entry_requirement_choices
 
     def save_image(image):

@@ -4,7 +4,7 @@ import secrets
 from flask_login import LoginManager, UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from geoalchemy2.functions import ST_DWithin
-from geoalchemy2.shape import from_shape
+from geoalchemy2.shape import from_shape, to_shape
 from geoalchemy2.types import Geography, Geometry
 from shapely.geometry import Point
 from sqlalchemy import Column, ForeignKey, Integer, String, Text
@@ -73,6 +73,28 @@ class Venue(db.Model):
     image_path = Column(String(100))
     creator_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     creator = db.relationship('User')
+
+    def get_location_latitude(self):
+        point = to_shape(self.geom)
+        return point.x
+
+    def get_location_longitude(self):
+        point = to_shape(self.geom)
+        return point.y
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'address': self.address,
+            'location': {
+                'lat': self.get_location_latitude(),
+                'lng': self.get_location_longitude()
+            },
+            'requirement': self.requirement.name,
+            'webpage': self.webpage,
+            'imagePath': self.image_path
+        }
 
     @staticmethod
     def save(venue):

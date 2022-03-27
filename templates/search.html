@@ -11,7 +11,7 @@
 
             <h3 class="mb-5">Where do you want to go?</h3>
 
-            <form method="POST" action="">
+            <form method="GET" action="">
 
               <div class="input-box form-outline mb-4">
                 {{ form.search(class="input form-control form-control-lg", placeholder="Search") }}
@@ -31,6 +31,11 @@
       </div>
     </div>
   </div>
+  {% if venues|length > 0 %}
+  <script>
+    const venues = {{ venues| tojson(indent = 2) }};
+  </script>
+  {% endif %}
   <script src="static/map.js"></script>
   <script
     src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&callback=initMap&v=weekly&language=en&libraries=places"
