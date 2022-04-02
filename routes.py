@@ -19,9 +19,11 @@ def create_routes(app):
         form.venue_type.choices = get_venue_type_choices()
         form.entry_requirement.choices = get_entry_requirements_choices()
 
-        venues = Venue.get_venues_in_vicinity(
-            search=form.search.data, venue_type_id=form.venue_type.data, entry_requirement_id=form.entry_requirement.data, lat=53, lng=12)
-        venues = [venue.to_dict() for venue in venues]
+        venues = []
+        if request.args:
+            venues = Venue.get_venues_in_vicinity(
+                search=form.search.data, venue_type_id=form.venue_type.data, entry_requirement_id=form.entry_requirement.data, lat=53, lng=12)
+            venues = [venue.to_dict() for venue in venues]
         return render_template('search.html', title='Search', form=form, venues=venues, GOOGLE_API_KEY=os.environ.get('GOOGLE_API_KEY'))
 
     @app.route("/venue", methods=['GET', 'POST'])

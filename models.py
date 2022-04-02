@@ -120,6 +120,6 @@ class Venue(db.Model):
             query = query.filter_by(requirement_id=entry_requirement_id)
 
         if search != '' and search is not None:
-            query = query.filter(Venue.name.ilike(search))
+            query = query.filter(Venue.name.ilike(f'%{search}%'))
 
         return query.limit(100).all()
