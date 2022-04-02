@@ -15,6 +15,7 @@ class SearchForm(FlaskForm):
     search = StringField()
     venue_type = SelectField(validate_choice=True, coerce=int)
     entry_requirement = SelectField(validate_choice=True, coerce=int)
+    submit = SubmitField('Search')
 
 
 class VenueForm(FlaskForm):

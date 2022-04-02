@@ -27,10 +27,11 @@ function initMarker(venue, map, infoWindow) {
 
   marker.addListener('click', () => {
     infoWindow.setContent(
-      `<img src='/static/venue_pics/${venue.imagePath}'>
-      <div class='venue-name'><a href="${venue.webpage}">${venue.name}</a></div>
+      `<img class="venue-image" src='/static/venue_pics/${venue.imagePath}'>
+      <div class="venue-name"><a href="${venue.webpage}">${venue.name}</a></div>
       <div class="venue-address">${venue.address}</div>
-      <div class="venue-requirement">${venue.requirement}</div>`)
+      <div class="venue-requirement">${venue.requirement}</div>
+      <div class="requirement-description">${venue.requirementDescription}</div>`)
 
     infoWindow.open({
       anchor: marker,

@@ -31,3 +31,35 @@ body {
 .input {
   font-size: 18px;
 }
+
+#submit {
+  margin-bottom: 20px;
+}
+
+.venue-image {
+  max-width: 100px;
+}
+
+.venue-name {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.venue-name a {
+  color: #a070c3;
+}
+
+.venue-requirement {
+  font-size: 20px;
+  font-weight: bold;
+  color: #a070c3;
+}
+
+.requirement-description {
+  display: none;
+}
+
+.venue-requirement:hover + .requirement-description {
+  display: block;
+  color: #a070c3;
+}

@@ -92,6 +92,7 @@ class Venue(db.Model):
                 'lng': self.get_location_longitude()
             },
             'requirement': self.requirement.name,
+            'requirementDescription': self.requirement.description,
             'webpage': self.webpage,
             'imagePath': self.image_path
         }
