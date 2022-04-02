@@ -90,4 +90,4 @@ def create_routes(app):
         i.thumbnail(output_size)
         i.save(image_path)
 
-        return image_path
+        return filename
