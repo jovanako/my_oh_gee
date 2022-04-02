@@ -29,9 +29,8 @@ function initMarker(venue, map, infoWindow) {
     infoWindow.setContent(
       `<img class="venue-image" src='/static/venue_pics/${venue.imagePath}'>
       <div class="venue-name"><a href="${venue.webpage}">${venue.name}</a></div>
-      <div class="venue-address">${venue.address}</div>
-      <div class="venue-requirement">${venue.requirement}</div>
-      <div class="requirement-description">${venue.requirementDescription}</div>`)
+      <div title="${venue.requirementDescription}" class="venue-requirement">${venue.requirement}</div>
+      <div class="venue-address">${venue.address}</div>`)
 
     infoWindow.open({
       anchor: marker,
