@@ -7,7 +7,16 @@ function initMap() {
   })
 
   const infoWindow = new google.maps.InfoWindow()
-  venues.forEach(venue => initMarker(venue, map, infoWindow))
+  const markers = venues.map(venue => initMarker(venue, map, infoWindow))
+
+  if (markers.length > 1) {
+    const bounds = new google.maps.LatLngBounds()
+    markers.forEach(marker => bounds.extend(marker.getPosition()))
+    map.fitBounds(bounds)
+  } else if (markers.length === 1) {
+    map.setCenter(markers[0].getPosition())
+    map.setZoom(15)
+  }
 }
 
 function initMarker(venue, map, infoWindow) {
@@ -29,4 +38,5 @@ function initMarker(venue, map, infoWindow) {
       shouldFocus: false,
     })
   })
+  return marker
 }
