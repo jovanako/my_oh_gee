@@ -107,10 +107,10 @@ class Venue(db.Model):
         query = Venue.query
 
         if lat is not None and lng is not None:
-            query.filter(ST_DWithin(
+            query = query.filter(ST_DWithin(
                 cast(Venue.geom, Geography),
                 cast(from_shape(Point(lat, lng)), Geography),
-                3000))
+                2000))
 
         venue_type_id = ANY_VENUE_TYPE_ID if venue_type_id is None else venue_type_id
         if venue_type_id is not ANY_VENUE_TYPE_ID:

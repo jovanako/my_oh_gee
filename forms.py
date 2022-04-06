@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, FileField, FloatField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.widgets import HiddenInput
+from wtforms.validators import DataRequired, Email
 
 
 class LoginForm(FlaskForm):
@@ -15,7 +16,8 @@ class SearchForm(FlaskForm):
     search = StringField()
     venue_type = SelectField(validate_choice=True, coerce=int)
     entry_requirement = SelectField(validate_choice=True, coerce=int)
-    submit = SubmitField('Search')
+    lat = FloatField(widget=HiddenInput())
+    lng = FloatField(widget=HiddenInput())
 
 
 class VenueForm(FlaskForm):

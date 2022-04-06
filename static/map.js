@@ -40,3 +40,4 @@ function initMarker(venue, map, infoWindow) {
   })
   return marker
 }
+

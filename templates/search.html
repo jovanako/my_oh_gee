@@ -11,7 +11,7 @@
 
             <h3 class="mb-5">Where do you want to go?</h3>
 
-            <form method="GET" action="">
+            <form id="search-form" method="GET" action="">
 
               <div class="input-box form-outline mb-4">
                 {{ form.search(class="input form-control form-control-lg", placeholder="Search") }}
@@ -24,7 +24,12 @@
               <div class="input-box form-outline mb-4">
                 {{ form.entry_requirement(class="input form-control form-control-lg") }}
               </div>
-              {{ form.submit(class="btn btn-lg btn-block") }}
+              {{ form.lat }}
+              {{ form.lng }}
+              <div id="submit-buttons">
+                <input id="search-button" type="button" value="Search" class="btn btn-lg btn-block">
+                <input id="search-near-me" type="button" value="Search near me" class="btn btn-lg btn-block">
+              </div>
             </form>
             <div id="map"></div>
           </div>
@@ -41,6 +46,7 @@
     {% endif %}
   </script>
 
+  <script src="static/location.js"></script>
   <script src="static/map.js"></script>
   <script
     src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&callback=initMap&v=weekly&language=en&libraries=places"
