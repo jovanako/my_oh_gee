@@ -24,7 +24,7 @@ def create_routes(app):
             venues = Venue.get_venues_in_vicinity(
                 search=form.search.data, venue_type_id=form.venue_type.data, entry_requirement_id=form.entry_requirement.data, lat=form.lat.data, lng=form.lng.data)
             venues = [venue.to_dict() for venue in venues]
-        return render_template('search.html', title='Search', form=form, venues=venues, GOOGLE_API_KEY=os.environ.get('GOOGLE_API_KEY'))
+        return render_template('search.html', form=form, venues=venues, GOOGLE_API_KEY=os.environ.get('GOOGLE_API_KEY'))
 
     @app.route("/venue", methods=['GET', 'POST'])
     @login_required
@@ -85,7 +85,8 @@ def create_routes(app):
 
     def save_image(image):
         filename = secure_filename(image.filename)
-        image_path = os.path.join(app.root_path, 'static/venue_pics', filename)
+        image_path = os.path.join(
+            app.root_path, 'static', 'venue_pics', filename)
         output_size = (125, 125)
 
         i = Image.open(image)
